@@ -7,7 +7,6 @@
         private $player_list = []; //参加者のリスト
         private $board;
         private $dice;
-        private $result = [];
 
         public function __construct(){
         }
@@ -20,15 +19,13 @@
         // board追加
         public function setBoard($board){
             $this->board = $board;
+            $this->board->countTotalNumber();//ボードのマス目がゼロでないか検証
         }
 
         // dice追加
         public function setDice($dice){
             $this->dice = $dice;
         }
-
-        //サイコロ振って進む
-        public function throwDice(){}
 
         //start!!
         public function start(){
@@ -62,11 +59,12 @@
                     $number = $this->dice->diceRoll();
                     echo "{$number}!!\n";
                     sleep(1);
-                    echo "{$player_name}くんは{$number}マス進んだ。。。\n";
-                    $current_position = $player->getRePosition($number);
+                    echo "{$player_name}くんは{$number}マス進んだ。。。\n\n";
+                    $player->rePosition($number);
+                    $current_position = $player->getPosition();
                     sleep(1);
 
-                    //ゴール判定
+                    //ゴール判定①(サイコロを振って出た目のゴール判定)　
                     if($current_position == $this->board->goal_number){
                         echo "{$player_name}くんゴーーール！\n"; 
                         sleep(1);
@@ -76,48 +74,57 @@
                         echo "{$player_name}くん勢いあまって、ゴール先の池に転落！！\n";
                         sleep(1);
                         echo "もう一回やり直しです。\n";
-                        $number = $number * (-1);
-                        $current_position = $player->getRePosition($number);
+                        $number = $number * (-1);//サイコロの出た目分戻る処理
+                        $player->rePosition($number);//ゴール直前のスタート位置に戻る
+                        $current_position = $player->getPosition();//池転落前のスタート位置取得
                     }
 
                     //停止したマスでの効果発動
-                    echo "!?!?!?!?\n";
+                    echo "おや!?!?!?!?\n";
                     sleep(2);
                     $stop_position = $this->board->board[($current_position)-1];
 
-                    if($stop_position == 0){
+                    if($stop_position == 0){//停止マスが0「効果なし」の場合
                         echo "しかし何も起こらなかった。\n";
                         sleep(1);
-                    }else if($stop_position < 0 ){
+                    }else if($stop_position < 0 ){//停止マスがマイナスの場合
                         echo "到達したマスは{$stop_position}マスだった。。。\n";
                         sleep(1);
-                        echo "容赦なく戻される。\n";
-                        $current_position = $player->getRePosition($stop_position);
+                        echo "容赦なく戻される( ﾉД`)ｼｸｼｸ…\n";
+                        $player->rePosition($stop_position);
                         sleep(1);
-                    }else if($stop_position > 0 ){
-                        echo "ラッキーマス♪♪";
+                    }else if($stop_position > 0 ){//停止マスがプラスの場合
+                        echo "ラッキーマス♪♪\n";
                         sleep(1);
-                        echo "快調に{$stop_position}進む。\n";
-                        $current_position = $player->getRePosition($stop_position);
+                        echo "快調に+{$stop_position}進む(^O^)／\n";
+                        $player->rePosition($stop_position);
                         sleep(1);
                     }
-                    
+                    //停止した効果マスにより移動したあとの現在位置取得
+                    $current_position = $player->getPosition();
+
+                    //ゴール判定②(判定①とは異なり、効果マスによりゴールした時のゴール判定)　
+                    if($current_position == $this->board->goal_number){
+                        echo "{$player_name}くんゴーーール！\n"; 
+                        sleep(1);
+                        echo "大変お疲れさまでした。\n";
+                        break 2;                   
+                    }elseif($current_position > $this->board->goal_number){
+                        echo "{$player_name}くん勢いあまって、ゴール先の池に転落！！\n";
+                        sleep(1);
+                        echo "もう一回やり直しです。\n";
+                        $stop_position = $stop_position * (-1);//
+                        $player->rePosition($stop_position);
+                        $current_position = $player->getPosition();
+                    }
+
+                    //現在位置の表示
                     echo "現在の位置は{$current_position}マス目です。";
                     $remaining_position = $this->board->goal_number - $current_position;
                     echo "(ゴールまであと{$remaining_position}マス！！)\n";
-                    sleep(1);
-                    
-                }
-
-                
-            
-            }
-        
-
-            
+                    sleep(2);
+                }              
+            }     
         }
-
-
     }
-
 ?>

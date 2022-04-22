@@ -18,13 +18,7 @@
     //diceの準備
     $game->setDice(new Dice());
    
-
-    // print_r($game->setBoard(new Board("data/board.csv")));
-    // sleep(10);
     //gamestart
     $game->start();
-
-
-
 
 ?>
