@@ -19,12 +19,19 @@
     function getGoalNumber(){
       return($this->goal_number);
     }
-
+    function countTotalNumber(){//配列内の個数をカウント
+      $number = count($this->board);
+      if($number == 0){
+          echo "データが入っていません。\n";
+          echo "csvファイルでマップを作ってみよう。\n";
+          exit;
+      }
+    }
+    
     //検証用
     function printBoard(){
         print_r($this->board);
     }
-
   }
    //$board = new Board("../data/board.csv");
    //$board = new Board("data/board.csv");
@@ -32,6 +39,4 @@
    //$board->getGoalNumber();
    //$aaa = $board->board[18];
    //print_r($aaa);
-   
-
 ?>
