@@ -1,9 +1,10 @@
 <?php
 
-    require_once "./class/player.php";
-    require_once "./class/dice.php";
-    require_once "./class/board.php";
-    require_once "./class/game.php";
+    require_once "./class/Player.php";
+    require_once "./class/Dice.php";
+    require_once "./class/Board.php";
+    require_once "./class/Game.php";
+    require_once "./class/Ivent.php";
 
     //gameの準備
     $game = new Game();
@@ -17,6 +18,9 @@
 
     //diceの準備
     $game->setDice(new Dice());
+
+    //iventの追加
+    $game->addIvent(new Ivent());
    
     //gamestart
     $game->start();

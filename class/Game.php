@@ -1,12 +1,14 @@
 <?php
-    require_once "player.php";
-    require_once "dice.php";
-    require_once "board.php";
+    require_once "Player.php";
+    require_once "Dice.php";
+    require_once "Board.php";
+    require_once "Ivent.php";
 
     class Game{
         private $player_list = []; //参加者のリスト
         private $board;
         private $dice;
+        private $ivent;
 
         public function __construct(){
         }
@@ -27,6 +29,11 @@
             $this->dice = $dice;
         }
 
+        // ivent追加
+        public function addIvent($ivent){
+            $this->ivent = $ivent;
+        }
+
         //start!!
         public function start(){
             //案内
@@ -38,16 +45,19 @@
             sleep(1);
             foreach($this->player_list as $player){
                 $player_name = $player->getName();
-                echo "{$player_name}くん\n";
+                $player_debt_money = ($player->getCurrentMoney())*-1;
+                echo "{$player_name}くん";
+                echo "(現在の借金:{$player_debt_money}万円!!)\n";
                 sleep(1);
             }
-            echo "それでは始めましょう！！\n";
+            echo "それでは人生一発逆転すごろくゲーム始めましょう！！\n";
             sleep(1);
 
             //ゴールするまでの繰り返し処理実行
             while($this->player_list){
                 foreach($this->player_list as $player){
                     $player_name = $player->getName(); 
+                    $player_debt_money = ($player->getCurrentMoney())*-1;
                     echo "================================================\n" ;
                     echo "{$player_name}くんの番です\n";
                     echo "Enterを押してサイコロ振ろう\n";
@@ -113,7 +123,7 @@
                         echo "{$player_name}くん勢いあまって、ゴール先の池に転落！！\n";
                         sleep(1);
                         echo "もう一回やり直しです。\n";
-                        $stop_position = $stop_position * (-1);//
+                        $stop_position = $stop_position * (-1);
                         $player->rePosition($stop_position);
                         $current_position = $player->getPosition();
                     }
@@ -121,8 +131,29 @@
                     //現在位置の表示
                     echo "現在の位置は{$current_position}マス目です。";
                     $remaining_position = $this->board->goal_number - $current_position;
-                    echo "(ゴールまであと{$remaining_position}マス！！)\n";
+                    echo "(ゴールまであと{$remaining_position}マス！！)\n\n";
                     sleep(2);
+
+                    //お金変動要素発生
+                    $random_ivent = $this->ivent->__construct();
+                    $ivent_detail = $this->ivent->getDetail($random_ivent);
+                    $ivent_money = $this->ivent->getMoney($random_ivent);
+                    echo "しかし、、、そこで{$player_name}くんを待ち受けるのは、、、?\n";
+                    sleep(1);
+                    echo "{$player_name}くんは{$ivent_detail}\n";
+                    sleep(1);
+                    echo "{$ivent_money}万円!!\n";
+                    sleep(1);
+                    $player->changeCurrentMoney($ivent_money);
+                    $current_debt_money = ($player->getCurrentMoney())*-1;
+                    if($current_debt_money < 0){
+                        $print_debt_money = $current_debt_money*-1;
+                        echo "現在の所持金：プラス{$print_debt_money}万円!!\n";
+                    }else{
+                        echo "現在の借金：{$current_debt_money}万円!!\n";
+                    }
+
+
                 }              
             }     
         }
