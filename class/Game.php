@@ -118,6 +118,7 @@
                         echo "{$player_name}くんゴーーール！\n"; 
                         sleep(1);
                         echo "大変お疲れさまでした。\n";
+                        sleep(1);
                         break 2;                   
                     }elseif($current_position > $this->board->goal_number){
                         echo "{$player_name}くん勢いあまって、ゴール先の池に転落！！\n";
@@ -152,10 +153,22 @@
                     }else{
                         echo "現在の借金：{$current_debt_money}万円!!\n";
                     }
-
-
                 }              
-            }     
+            }
+
+            //最終結果発表
+            echo "================================================\n" ;
+            echo "最終結果は下記のとおりです。\n";
+            sleep(1);
+            foreach($this->player_list as $key => $player){
+                if ($player->getPosition() == $this->board->goal_number){
+                    echo "優勝☆:{$player->getName()}くん";
+                    echo "(所持金：{$player->getCurrentMoney()}万円)\n";
+                }else{
+                    echo "{$player->getName()}くん";
+                    echo "（所持金：{$player->getCurrentMoney()}万円）\n";
+                }
+            }   
         }
     }
 ?>
