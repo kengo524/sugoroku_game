@@ -2,13 +2,13 @@
     require_once "Player.php";
     require_once "Dice.php";
     require_once "Board.php";
-    require_once "Ivent.php";
+    require_once "Event.php";
 
     class Game{
         private $player_list = []; //参加者のリスト
         private $board;
         private $dice;
-        private $ivent;
+        private $event;
 
         public function __construct(){
         }
@@ -30,8 +30,8 @@
         }
 
         // ivent追加
-        public function addIvent($ivent){
-            $this->ivent = $ivent;
+        public function addEvent($event){
+            $this->event = $event;
         }
 
         //start!!
@@ -135,16 +135,16 @@
                     sleep(2);
 
                     //お金変動要素発生
-                    $random_ivent = $this->ivent->__construct();
-                    $ivent_detail = $this->ivent->getDetail($random_ivent);
-                    $ivent_money = $this->ivent->getMoney($random_ivent);
+                    $random_event = $this->event->__construct();
+                    $event_detail = $this->event->getDetail($random_event);
+                    $event_money = $this->event->getMoney($random_event);
                     echo "しかし、、、そこで{$player_name}くんを待ち受けるのは、、、?\n";
                     sleep(1);
-                    echo "{$player_name}くんは{$ivent_detail}\n";
+                    echo "{$player_name}くんは{$event_detail}\n";
                     sleep(1);
-                    echo "{$ivent_money}万円!!\n";
+                    echo "{$event_money}万円!!\n";
                     sleep(1);
-                    $player->changeCurrentMoney($ivent_money);
+                    $player->changeCurrentMoney($event_money);
                     $current_debt_money = ($player->getCurrentMoney())*-1;
                     if($current_debt_money < 0){
                         $print_debt_money = $current_debt_money*-1;

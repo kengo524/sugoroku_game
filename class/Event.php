@@ -3,8 +3,8 @@
     require_once "Dice.php";
     require_once "Board.php";
 
-    class Ivent{
-        private static $ivent_list = [
+    class Event{
+        private static $event_list = [
             "給料を受け取った!!!" => +20,
             "定期預金を解約でなんとかやりくりしたー！" => +50,
             "仮想通過で大当たりーーー！！" => +100,
@@ -16,8 +16,8 @@
         private $money;
 
         public function __construct(){
-            $this->detail = array_rand(Ivent::$ivent_list);
-            $this->money = Ivent::$ivent_list[$this->detail];
+            $this->detail = array_rand(Event::$event_list);
+            $this->money = Event::$event_list[$this->detail];
         }
 
         // データ取得関数
@@ -28,8 +28,8 @@
             return $this->money;
         }
     }
-    // $ivent = new Ivent();
-    // print_r($ivent);
-    // $ivent->getDetail();
-    // $ivent->getMoney();
+    // $event = new Event();
+    // print_r($event);
+    // $event->getDetail();
+    // $event->getMoney();
 ?>

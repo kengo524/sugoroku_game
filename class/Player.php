@@ -27,8 +27,8 @@
     public function getCurrentMoney(){
         return $this->current_money; 
     }
-    public function changeCurrentMoney($ivent_money){
-        $this->current_money += $ivent_money;
+    public function changeCurrentMoney($event_money){
+        $this->current_money += $event_money;
     }
   }
 //   $tom = new Player("Tom");

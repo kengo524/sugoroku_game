@@ -4,7 +4,7 @@
     require_once "./class/Dice.php";
     require_once "./class/Board.php";
     require_once "./class/Game.php";
-    require_once "./class/Ivent.php";
+    require_once "./class/Event.php";
 
     //gameの準備
     $game = new Game();
@@ -20,7 +20,7 @@
     $game->setDice(new Dice());
 
     //iventの追加
-    $game->addIvent(new Ivent());
+    $game->addEvent(new Event());
    
     //gamestart
     $game->start();
